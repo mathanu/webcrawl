@@ -1,0 +1,88 @@
+
+<div class="row">
+   <div class="col‑xs‑12" align='center'>
+   		<h2>REPORTS</h2>
+  </div>
+ </div>
+ <div class="row" align='center'>	
+    <button [class.spinner]="loading" [disabled]="loading" (click)="getTagValues(i)" class="btnClass focus" *ngFor="let tag of tagArray; let i = index">{{ tag }}</button>
+</div>
+<br>
+<div class="row" align='center' >
+<button (click)="showGraph(1)" class="btn-space" > VERTICAL CHART BAR</button>
+<button (click)="showGraph(2)" class="btn-space" >PIE CHART</button>
+<button (click)="showGraph(3)" class="btn-space" >ADVANCED PIE CHART</button>
+<button (click)="showGraph(4)" class="btn-space" >SHOW QUESTIONS</button>
+</div>
+<br>
+
+<div *ngIf="this.tagDataObj && this.tagDataObj.TOTAL != 0" class="row" align='center'>
+  
+  <span> {{this.tagDataObj.TOTAL}} QUESTIONS POSTED IN  TAG <b>{{this.tagValueTxt | uppercase}} </b></span>
+  
+  <br>
+
+<div  *ngIf="this.toggleId == 1">
+  <ngx-charts-bar-vertical
+    [view]="[1000,400]"
+    [results]="this.tagDataObj.SURVEYDATA"
+    [xAxisLabel]="'QUESTIONS STATISTICS'"
+    [legendTitle]="'Question Survey'"
+    [yAxisLabel]="'COUNTS'"
+    [legend]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [xAxis]="true"
+    [yAxis]="true"
+    [gradient]="true">
+  </ngx-charts-bar-vertical>
+ </div>
+
+ <div *ngIf="this.toggleId == 2">
+      <ngx-charts-pie-chart
+        [results]="this.tagDataObj.SURVEYDATA"
+        [legend]="true"
+        [legendTitle]="'Question Statistics'"
+        [view]="[1000,300]"
+        [labels]="true" >
+      </ngx-charts-pie-chart>
+    </div>
+
+ <div *ngIf="this.toggleId == 3">
+  <ngx-charts-advanced-pie-chart
+  class="chart-container"
+  [view]="[1000,300]"
+  [results]="this.tagDataObj.SURVEYDATA"
+  [gradient]="true"
+
+
+ 
+>
+</ngx-charts-advanced-pie-chart>
+    </div>
+
+  <div *ngIf="this.toggleId == 4 && this.tagDataObjFlag" style="width: 80%;">
+
+    <table datatable  class="row-border hover" *ngIf="this.tagDataObjFlag">
+      <thead>
+        <tr>
+          <th *ngFor="let head of headElements" scope="col">{{head}} </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let el of this.tagDataObj.RECORDS">
+          <td>{{ el['questionid'] }}</td>
+          <td><a href="https://stackoverflow.com/questions/{{el['questionid']}}" target="_blank">{{el['title']}}</a></td>
+          <td>{{el['answers']}}</td>
+          <td>{{el['views']}}</td>
+          <td>{{el['votes']}}</td>
+          <td>{{el['author']}}</td>
+          <td>{{el['dateadded'] | date: 'dd-MM-yyyy'}}</td>
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+    
+ </div>
